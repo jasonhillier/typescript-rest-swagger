@@ -85,6 +85,12 @@ export class MyService {
     ) {
         return;
     }
+
+    @GET
+    @swagger.Tags('plural')
+    testPluralMulti() {
+        return;
+    }
 }
 
 class BaseService {

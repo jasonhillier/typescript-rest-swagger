@@ -15,6 +15,7 @@ describe('Definition generation', () => {
   describe('MyService', () => {
     it('should generate paths for decorated services', () => {
       expect(spec.paths).to.have.property('/mypath');
+      expect(spec.paths).to.have.property('/mypaths'); // test for 'plural'
       expect(spec.paths).to.have.property('/mypath/secondpath');
     });
 

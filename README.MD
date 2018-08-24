@@ -3,6 +3,11 @@
 [![Coverage Status](https://coveralls.io/repos/github/thiagobustamante/typescript-rest-swagger/badge.svg?branch=master)](https://coveralls.io/github/thiagobustamante/typescript-rest-swagger?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/thiagobustamante/typescript-rest-swagger/badge.svg?targetFile=package.json)](https://snyk.io/test/github/thiagobustamante/typescript-rest-swagger?targetFile=package.json)
 
+# Temporary fork
+Adds support for pluralizing endpoints within class/controller inheritance
+e.g.
+/myservice -> /myservices (GET,PUT,POST,etc)
+
 # Swagger for Typescript-rest
 This is a tool to generate swagger files from a [typescript-rest](https://github.com/thiagobustamante/typescript-rest) project.
 
