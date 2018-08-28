@@ -278,7 +278,7 @@ export class SpecGenerator {
         } else if (swaggerType.type === 'string' && swaggerType.format === 'binary') {
             return 'application/octet-stream';
         } else {
-            return (this.config.produces && this.config.produces.length) ? this.config.produces[0] : 'text/html';
+            return 'application/json';
         }
     }
 
