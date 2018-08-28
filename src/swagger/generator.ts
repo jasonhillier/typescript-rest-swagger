@@ -9,6 +9,7 @@ import * as mkdirp from 'mkdirp';
 import * as YAML from 'yamljs';
 import * as pathUtil from 'path';
 import * as _ from 'lodash';
+const keysort = require('keysort-js');
 
 export class SpecGenerator {
     constructor(private readonly metadata: Metadata, private readonly config: SwaggerConfig) { }
@@ -113,7 +114,7 @@ export class SpecGenerator {
             });
         });
 
-        return paths;
+        return keysort(paths);
     }
 
     private buildPathMethod(controllerName: string, method: Method, pathObject: any) {
@@ -277,7 +278,7 @@ export class SpecGenerator {
         } else if (swaggerType.type === 'string' && swaggerType.format === 'binary') {
             return 'application/octet-stream';
         } else {
-            return 'text/html';
+            return (this.config.produces && this.config.produces.length) ? this.config.produces[0] : 'text/html';
         }
     }
 
