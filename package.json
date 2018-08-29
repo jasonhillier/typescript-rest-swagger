@@ -1,6 +1,6 @@
 {
   "name": "typescript-rest-swagger-plural",
-  "version": "0.0.24",
+  "version": "0.0.27",
   "description": "Generate Swagger files from a typescript-rest project",
   "keywords": [
     "typescript",

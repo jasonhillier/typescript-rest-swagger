@@ -9,7 +9,7 @@ const expect = chai.expect;
 const jsonata = require('jsonata');
 
 describe('Definition generation', () => {
-  const metadata = new MetadataGenerator('./test/data/apis.ts').generate();
+  const metadata = new MetadataGenerator(getDefaultOptions(), './test/data/apis.ts').generate();
   const spec = new SpecGenerator(metadata, getDefaultOptions()).getSpec();
 
   describe('MyService', () => {

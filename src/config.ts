@@ -88,6 +88,11 @@ export interface SwaggerConfig {
     produces?: [string];
 
     /**
+     * List of method parameter names to ignore
+     */
+    ignoreParameters?: string[];
+
+    /**
      * Default collectionFormat property for query parameters of array type.
      * Possible values are `csv`, `ssv`, `tsv`, `pipes`, `multi`. If not specified, Swagger defaults to `csv`.
      */

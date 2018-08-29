@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import { SwaggerConfig } from '../config';
 import { Method, ResponseData, ResponseType, Type } from './metadataGenerator';
 import { resolveType } from './resolveType';
 import { ParameterGenerator } from './parameterGenerator';
@@ -11,7 +12,8 @@ export class MethodGenerator {
     private method: string;
     private path: string;
 
-    constructor(private readonly node: ts.MethodDeclaration,
+    constructor(private readonly config: SwaggerConfig,
+                private readonly node: ts.MethodDeclaration,
                 private readonly controllerPath: string,
                 private readonly genericTypeMap?: Map<String, ts.TypeNode>) {
         this.processMethodDecorators();
@@ -51,7 +53,12 @@ export class MethodGenerator {
     }
 
     private buildParameters() {
-        const parameters = this.node.parameters.map(p => {
+        const nodeParameters = this.node.parameters.filter(p => {
+            const parameterId = p.name as ts.Identifier;
+            const result = !this.config.ignoreParameters || this.config.ignoreParameters.indexOf(parameterId.text)==-1;
+            return result;
+        });
+        const parameters = nodeParameters.map(p => {
             try {
                 const path = pathUtil.posix.join('/', (this.controllerPath ? this.controllerPath : ''), this.path);
 

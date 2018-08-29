@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import { SwaggerConfig } from '../config';
 import { Controller } from './metadataGenerator';
 import { getSuperClass } from './resolveType';
 import { MethodGenerator } from './methodGenerator';
@@ -10,7 +11,7 @@ export class ControllerGenerator {
     private readonly pathValue: string | undefined;
     private genMethods: Set<string> = new Set<string>();
 
-    constructor(private readonly node: ts.ClassDeclaration) {
+    constructor(private readonly config: SwaggerConfig, private readonly node: ts.ClassDeclaration) {
         this.pathValue = normalizePath(getDecoratorTextValue(node, decorator => decorator.text === 'Path'));
     }
 
@@ -53,7 +54,7 @@ export class ControllerGenerator {
     private buildMethodsForClass(node: ts.ClassDeclaration, genericTypeMap?: Map<String, ts.TypeNode>) {
         return node.members
             .filter(m => (m.kind === ts.SyntaxKind.MethodDeclaration))
-            .map((m: ts.MethodDeclaration) => new MethodGenerator(m, this.pathValue || '', genericTypeMap))
+            .map((m: ts.MethodDeclaration) => new MethodGenerator(this.config, m, this.pathValue || '', genericTypeMap))
             .filter(generator => {
                 if (generator.isValid() && !this.genMethods.has(generator.getMethodName())) {
                     this.genMethods.add(generator.getMethodName());

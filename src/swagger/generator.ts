@@ -108,6 +108,10 @@ export class SpecGenerator {
                 method.consumes = _.union(controller.consumes, method.consumes);
                 method.produces = _.union(controller.produces, method.produces);
                 method.tags = _.union(controller.tags, method.tags);
+                if (controller.path) {
+                    // add a tag to group each method by its controller
+                    method.tags.push(controller.path.replace(/\//, ' ').trim());
+                }
                 method.security = method.security || controller.security;
 
                 this.buildPathMethod(controller.name, method, paths[path]);

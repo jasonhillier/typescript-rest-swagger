@@ -1,4 +1,5 @@
 import * as ts from 'typescript';
+import { SwaggerConfig } from '../config';
 import { ControllerGenerator } from './controllerGenerator';
 
 export class MetadataGenerator {
@@ -9,7 +10,7 @@ export class MetadataGenerator {
     private referenceTypes: { [typeName: string]: ReferenceType } = {};
     private circularDependencyResolvers = new Array<(referenceTypes: { [typeName: string]: ReferenceType }) => void>();
 
-    constructor(entryFile: string) {
+    constructor(private readonly config: SwaggerConfig, entryFile: string) {
         this.program = ts.createProgram([entryFile], {});
         this.typeChecker = this.program.getTypeChecker();
         MetadataGenerator.current = this;
@@ -75,7 +76,7 @@ export class MetadataGenerator {
     private buildControllers() {
         return this.nodes
             .filter(node => node.kind === ts.SyntaxKind.ClassDeclaration)
-            .map((classDeclaration: ts.ClassDeclaration) => new ControllerGenerator(classDeclaration))
+            .map((classDeclaration: ts.ClassDeclaration) => new ControllerGenerator(this.config, classDeclaration))
             .filter(generator => generator.isValid())
             .map(generator => generator.generate());
     }

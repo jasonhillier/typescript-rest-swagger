@@ -10,6 +10,7 @@ export function getDefaultOptions(): SwaggerConfig {
     name: 'Test API',
     outputDirectory: '',
     version: '1.0.0',
+    ignoreParameters: ['pRequest', 'pResponse'],
     yaml: false
   };
 }

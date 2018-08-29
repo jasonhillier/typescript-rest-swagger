@@ -31,7 +31,7 @@ const parameters = parser.parseArgs();
 const config = getConfig(parameters.config);
 
 const swaggerConfig = validateSwaggerConfig(config.swagger);
-const metadata = new MetadataGenerator(swaggerConfig.entryFile).generate();
+const metadata = new MetadataGenerator(swaggerConfig, swaggerConfig.entryFile).generate();
 new SpecGenerator(metadata, swaggerConfig).generate(swaggerConfig.outputDirectory, swaggerConfig.yaml)
     .then(() => {
         console.info ('Generation completed.');
