@@ -39,6 +39,8 @@ export class MethodGenerator {
             consumes: this.getDecoratorValues('Accept'),
             deprecated: isExistJSDocTag(this.node, 'deprecated'),
             description: getJSDocDescription(this.node),
+            basePath: this.getFirstDecoratorValue('BasePath'),
+            isPlural: this.hasDecorator('Plural'),
             method: this.method,
             name: identifier.text,
             parameters: this.buildParameters(),
@@ -111,6 +113,21 @@ export class MethodGenerator {
         } else {
             this.path = '';
         }
+    }
+
+    private hasDecorator(pName: string): boolean {
+        const decorators = getDecorators(this.node, decorator => decorator.text === pName);
+        return (decorators && decorators.length > 0);
+    }
+
+    private getFirstDecoratorValue(pName: string): string {
+        const decorators = getDecorators(this.node, decorator => decorator.text === pName);
+        if (decorators && decorators.length > 0) {
+            if (decorators[0].arguments.length > 0) {
+                return decorators[0].arguments[0];
+            }
+        }
+        return '';
     }
 
     private getMethodResponses(): ResponseType[] {

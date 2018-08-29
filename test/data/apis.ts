@@ -10,6 +10,7 @@ import {
 } from 'typescript-rest';
 
 import * as swagger from '../../src/decorators';
+import { Tags } from '../../src/decorators';
 
 interface Address {
     street: string;
@@ -87,8 +88,16 @@ export class MyService {
     }
 
     @GET
-    @swagger.Tags('plural')
-    testPluralMulti(pRequest, pResponse) {
+    @swagger.Plural()
+    @swagger.BodyType(Object)
+    testPluralMulti() {
+        return;
+    }
+
+    @GET
+    @swagger.BasePath('/OverridePath')
+    @Path('testpath')
+    testOverridePath(pRequest, pResponse) {
         return;
     }
 }

@@ -17,6 +17,7 @@ describe('Definition generation', () => {
       expect(spec.paths).to.have.property('/mypath');
       expect(spec.paths).to.have.property('/mypaths'); // test for 'plural'
       expect(spec.paths).to.have.property('/mypath/secondpath');
+      expect(spec.paths).to.have.property('/OverridePath/testpath');
     });
 
     it('should generate paths for decorated services, declared on superclasses', () => {

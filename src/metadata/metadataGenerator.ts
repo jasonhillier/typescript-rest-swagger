@@ -101,6 +101,8 @@ export interface Controller {
 export interface Method {
     deprecated?: boolean;
     description: string;
+    basePath: string;
+    isPlural: boolean;
     method: string;
     name: string;
     parameters: Parameter[];

@@ -67,6 +67,27 @@ export function Tags(...values: string[]): any {
 }
 
 /**
+ * Pluralize this endpoint from its controller.
+ */
+export function Plural(): any {
+  return () => { return; };
+}
+
+/**
+ * Override automatic path building
+ */
+export function BasePath(path: string): any {
+  return () => { return; };
+}
+
+/**
+ * Override automatic path building
+ */
+export function BodyType<T>(body: { new(): T; }): any {
+  return () => { return; };
+}
+
+/**
  * Add a security constraint to method generated docs.
  * @param {name} security name from securityDefinitions
  * @param {scopes} security scopes from securityDefinitions

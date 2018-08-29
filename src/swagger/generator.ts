@@ -99,11 +99,8 @@ export class SpecGenerator {
 
         this.metadata.controllers.forEach(controller => {
             controller.methods.forEach(method => {
-                let isPlural = false;
-                if (method.tags && method.tags.indexOf('plural') >-1) {
-                    isPlural = true;
-                }
-                const path = pathUtil.posix.join('/', (controller.path ? controller.path : '') + (isPlural ? 's' : ''), method.path);
+                const basePath = method.basePath || (controller.path ? controller.path : '');
+                const path = pathUtil.posix.join('/', basePath + (method.isPlural ? 's' : ''), method.path);
                 paths[path] = paths[path] || {};
                 method.consumes = _.union(controller.consumes, method.consumes);
                 method.produces = _.union(controller.produces, method.produces);
