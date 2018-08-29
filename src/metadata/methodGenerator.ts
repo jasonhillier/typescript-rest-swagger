@@ -73,6 +73,12 @@ export class MethodGenerator {
             }
         }).filter(p => (p.in !== 'context') && (p.in !== 'cookie'));
 
+        const bodyTypes = this.getDecoratorValues('BodyType');
+        if (bodyTypes && bodyTypes.length > 0) {
+            const bodyTypeId = bodyTypes[0] as ts.Identifier;
+            parameters.push(ParameterGenerator.build('body', 'body', bodyTypeId));
+        }
+
         const bodyParameters = parameters.filter(p => p.in === 'body');
         const formParameters = parameters.filter(p => p.in === 'formData');
 

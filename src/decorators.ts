@@ -131,3 +131,31 @@ export function IsFloat(target: any, propertyKey: string, parameterIndex?: numbe
 export function IsDouble(target: any, propertyKey: string, parameterIndex?: number) {
   return;
 }
+
+/**
+ * Documentation-only: Allow specifying APIs without 'typescript-rest' library
+ */
+export function GET(): any {
+  return () => { return; };
+}
+
+/**
+ * Documentation-only: Allow specifying APIs without 'typescript-rest' library
+ */
+export function POST(): any {
+  return () => { return; };
+}
+
+/**
+ * Documentation-only: Allow specifying APIs without 'typescript-rest' library
+ */
+export function PUT(): any {
+  return () => { return; };
+}
+
+/**
+ * Documentation-only: Allow specifying APIs without 'typescript-rest' library
+ */
+export function DELETE(): any {
+  return () => { return; };
+}

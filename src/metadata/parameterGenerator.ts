@@ -1,5 +1,5 @@
 import { MetadataGenerator, Parameter, Type } from './metadataGenerator';
-import { resolveType, getCommonPrimitiveAndArrayUnionType, getLiteralValue } from './resolveType';
+import { resolveType, getReferenceType, getCommonPrimitiveAndArrayUnionType, getLiteralValue } from './resolveType';
 import { getDecoratorName, getDecoratorTextValue, getDecoratorOptions } from '../utils/decoratorUtils';
 import * as ts from 'typescript';
 
@@ -10,6 +10,18 @@ export class ParameterGenerator {
         private readonly path: string,
         private readonly genericTypeMap?: Map<String, ts.TypeNode>
     ) { }
+
+    static build(name: string, pIn: string, pTypeName: ts.Identifier, description?: string, required: boolean = true): Parameter
+    {
+        return {
+            description: description || '',
+            in: pIn,
+            name: name,
+            parameterName: name,
+            required: required,
+            type: getReferenceType(pTypeName)
+        };
+    }
 
     public generate(): Parameter {
         const decoratorName = getDecoratorName(this.parameter, identifier => this.supportParameterDecorator(identifier.text));

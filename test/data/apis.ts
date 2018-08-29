@@ -87,9 +87,9 @@ export class MyService {
         return;
     }
 
-    @GET
+    @swagger.POST()
     @swagger.Plural()
-    @swagger.BodyType(Object)
+    @swagger.BodyType(Person)
     testPluralMulti() {
         return;
     }
@@ -103,7 +103,7 @@ export class MyService {
 }
 
 class BaseService {
-    @DELETE
+    @swagger.DELETE()
     @Path(':id')
     testDelete(@PathParam('id') id: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {

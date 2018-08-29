@@ -204,7 +204,7 @@ function getInlineObjectType(typeNode: ts.TypeNode): ObjectType {
     return type;
 }
 
-function getReferenceType(type: ts.EntityName, genericTypeMap?: Map<String, ts.TypeNode>, genericTypes?: ts.TypeNode[]): ReferenceType {
+export function getReferenceType(type: ts.EntityName, genericTypeMap?: Map<String, ts.TypeNode>, genericTypes?: ts.TypeNode[]): ReferenceType {
     let typeName = resolveFqTypeName(type);
     if (genericTypeMap && genericTypeMap.has(typeName)) {
         const refType: any = genericTypeMap.get(typeName);

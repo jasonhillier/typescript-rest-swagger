@@ -31,6 +31,12 @@ describe('Definition generation', () => {
       expect(expression.evaluate(spec)).to.eq('Joe');
     });
 
+    
+    it('should support manual body type definition', () => {
+      const expression = jsonata('paths."/mypaths".post.parameters[0].schema."$ref"');
+      expect(expression.evaluate(spec)).to.eq('#/definitions/Person');
+    });
+
     it('should generate examples for array paraemter', () => {
       expect(spec.paths).to.have.property('/mypath');
       const expression = jsonata('paths."/mypath".post.responses."204".examples."application/json"[0].name');
