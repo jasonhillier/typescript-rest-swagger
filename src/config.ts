@@ -93,6 +93,13 @@ export interface SwaggerConfig {
     ignoreParameters?: string[];
 
     /**
+     * Automatically create parameters from path string, where the parameter name matches the regex pattern.
+     * i.e.
+     * ['^ID', 'long', 'id value description']
+     */
+    autoPathParameters?: string[][];
+
+    /**
      * Default collectionFormat property for query parameters of array type.
      * Possible values are `csv`, `ssv`, `tsv`, `pipes`, `multi`. If not specified, Swagger defaults to `csv`.
      */

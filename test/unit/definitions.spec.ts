@@ -52,6 +52,15 @@ describe('Definition generation', () => {
       expect(expression.evaluate(spec)).to.eq(false);
     });
 
+    it('should generate automatic path parameters', () => {
+      let expression = jsonata('paths."/primitives/{AUTOID_test}/test".get.parameters[0].required');
+      expect(expression.evaluate(spec)).to.eq(true);
+      expression = jsonata('paths."/primitives/{AUTOID_test}/test".get.parameters[0].type');
+      expect(expression.evaluate(spec)).to.eq('integer');
+      expression = jsonata('paths."/primitives/{AUTOID_test}/test".get.parameters[0].description');
+      expect(expression.evaluate(spec)).to.eq('auto id parameter');
+    });
+
     it('should generate description for methods and paraemters', () => {
       let expression = jsonata('paths."/mypath/secondpath".get.parameters[0].description');
       expect(expression.evaluate(spec)).to.eq('This is the test param description');

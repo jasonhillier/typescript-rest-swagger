@@ -333,6 +333,12 @@ export class PrimitiveEndpoint {
         return {};
     }
 
+    @Path(':AUTOID_test/test')
+    @GET
+    testAutoID(): PrimitiveInterfaceModel {
+        return {};
+    }
+
     @Path(':id')
     @GET
     @swagger.ParamFromPath('id', swagger.PrimitiveTypes.long, 'test description')

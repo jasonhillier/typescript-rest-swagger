@@ -64,7 +64,7 @@ export class MethodGenerator {
             parameters.push(ParameterGenerator.build('body', 'body', bodyTypeId));
         }
 
-        parameters = parameters.concat(this.getPathParameters());
+        this.addPathParameters(parameters);
 
         const bodyParameters = parameters.filter(p => p.in === 'body');
         const formParameters = parameters.filter(p => p.in === 'formData');
@@ -102,15 +102,42 @@ export class MethodGenerator {
     }
 
     //gets 'ParamFromPath' parameters
-    private getPathParameters(): Parameter[] {
-        let params: Parameter[] = [];
+    private addPathParameters(pCurrentParams: Parameter[]): void {
         const decorators = getDecorators(this.node, decorator => decorator.text === 'ParamFromPath');
         decorators.map(d=>{
             const typeDef = d.arguments[1].name.text as PrimitiveTypes;
-            params.push(ParameterGenerator.build(d.arguments[0], 'path', typeDef, d.arguments[2]));
+            pCurrentParams.push(ParameterGenerator.build(d.arguments[0], 'path', typeDef, d.arguments[2]));
         });
 
-        return params;
+        if (this.config.autoPathParameters && this.path)
+        {
+                const paramsInPath = this.path.match(/{(.+?)}/);
+
+                if (paramsInPath && paramsInPath[1])
+                {
+                    const pathParamName = paramsInPath[1];
+                    if (pathParamName && this.config.autoPathParameters)
+                    {
+                        for (let x=0; x<this.config.autoPathParameters.length; x++)
+                        {
+                            const autoParamRegex = this.config.autoPathParameters[x][0];
+                            if (pathParamName.match(new RegExp(autoParamRegex)))
+                            {
+                                //only add parameter it if it doesn't already exist
+                                if (!pCurrentParams.find(p=>p.name === pathParamName && p.in === 'path'))
+                                {
+                                    pCurrentParams.push(ParameterGenerator.build(
+                                        pathParamName,
+                                        'path', 
+                                        <PrimitiveTypes>this.config.autoPathParameters[x][1],
+                                        this.config.autoPathParameters[x][2]
+                                    ));
+                                }
+                            }
+                        }
+                    }
+                }
+        }
     }
 
     private getCurrentLocation() {

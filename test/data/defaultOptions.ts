@@ -1,6 +1,9 @@
 import { SwaggerConfig } from './../../src/config';
 export function getDefaultOptions(): SwaggerConfig {
   return {
+    autoPathParameters: [
+      ['^AUTOID_', 'long', 'auto id parameter']
+    ],
     basePath: '/',
     collectionFormat: 'multi',
     description: 'Description of a test API',
