@@ -285,6 +285,15 @@ describe('Definition generation', () => {
       expect(expression.evaluate(spec)).to.eq('');
     });
 
+    it('should support ParamFromPath decorator', () => {
+      let expression = jsonata('paths."/primitives/{id}".get.parameters[0].type');
+      expect(expression.evaluate(spec)).to.eq('integer');
+      expression = jsonata('paths."/primitives/{id}".get.parameters[0].format');
+      expect(expression.evaluate(spec)).to.eq('int64');
+      expression = jsonata('paths."/primitives/{id}".get.parameters[0].description');
+      expect(expression.evaluate(spec)).to.eq('test description');
+    });
+
     it('should generate number type decorated path params', () => {
       let expression = jsonata('paths."/primitives/{id}".get.parameters[0].type');
       expect(expression.evaluate(spec)).to.eq('integer');

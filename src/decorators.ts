@@ -81,7 +81,21 @@ export function BasePath(path: string): any {
 }
 
 /**
- * Override automatic path building
+ * Documentation-only: Allow specifying path without 'typescript-rest' library
+ */
+export function Path(path: string): any {
+  return () => { return; };
+}
+
+/**
+ * Documentation-only: Allow specifying path-parameter without 'typescript-rest' library
+ */
+export function ParamFromPath<T>(name: string, paramType:  PrimitiveTypes, description?: string): any {
+  return () => { return; };
+}
+
+/**
+ * Specify POST/PUT request body data-type
  */
 export function BodyType<T>(body: { new(): T; }): any {
   return () => { return; };
@@ -158,4 +172,15 @@ export function PUT(): any {
  */
 export function DELETE(): any {
   return () => { return; };
+}
+
+export enum PrimitiveTypes
+{
+  double = "double",
+  string = "string",
+  long = "long",
+  float = "float",
+  date = "date",
+  datetime = "datetime",
+  boolean = "boolean"
 }

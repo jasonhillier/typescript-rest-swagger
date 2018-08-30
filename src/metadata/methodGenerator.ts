@@ -1,12 +1,13 @@
 import * as ts from 'typescript';
 import { SwaggerConfig } from '../config';
-import { Method, ResponseData, ResponseType, Type } from './metadataGenerator';
+import { Method, ResponseData, ResponseType, Type, Parameter } from './metadataGenerator';
 import { resolveType } from './resolveType';
 import { ParameterGenerator } from './parameterGenerator';
 import { getJSDocDescription, getJSDocTag, isExistJSDocTag } from '../utils/jsDocUtils';
 import { getDecorators } from '../utils/decoratorUtils';
 import { normalizePath } from '../utils/pathUtils';
 import * as pathUtil from 'path';
+import { PrimitiveTypes } from '../decorators';
 
 export class MethodGenerator {
     private method: string;
@@ -54,7 +55,31 @@ export class MethodGenerator {
         };
     }
 
-    private buildParameters() {
+    private buildParameters(): Parameter[] {
+        let parameters = this.getNodeParameters();
+
+        const bodyTypes = this.getDecoratorValues('BodyType');
+        if (bodyTypes && bodyTypes.length > 0) {
+            const bodyTypeId = bodyTypes[0] as ts.Identifier;
+            parameters.push(ParameterGenerator.build('body', 'body', bodyTypeId));
+        }
+
+        parameters = parameters.concat(this.getPathParameters());
+
+        const bodyParameters = parameters.filter(p => p.in === 'body');
+        const formParameters = parameters.filter(p => p.in === 'formData');
+
+        if (bodyParameters.length > 1) {
+            throw new Error(`Only one body parameter allowed in '${this.getCurrentLocation()}' method.`);
+        }
+        if (bodyParameters.length > 0 && formParameters.length > 0) {
+            throw new Error(`Choose either during @FormParam and @FileParam or body parameter  in '${this.getCurrentLocation()}' method.`);
+        }
+        return parameters;
+    }
+
+    private getNodeParameters(): Parameter[]
+    {
         const nodeParameters = this.node.parameters.filter(p => {
             const parameterId = p.name as ts.Identifier;
             const result = !this.config.ignoreParameters || this.config.ignoreParameters.indexOf(parameterId.text)==-1;
@@ -73,22 +98,19 @@ export class MethodGenerator {
             }
         }).filter(p => (p.in !== 'context') && (p.in !== 'cookie'));
 
-        const bodyTypes = this.getDecoratorValues('BodyType');
-        if (bodyTypes && bodyTypes.length > 0) {
-            const bodyTypeId = bodyTypes[0] as ts.Identifier;
-            parameters.push(ParameterGenerator.build('body', 'body', bodyTypeId));
-        }
-
-        const bodyParameters = parameters.filter(p => p.in === 'body');
-        const formParameters = parameters.filter(p => p.in === 'formData');
-
-        if (bodyParameters.length > 1) {
-            throw new Error(`Only one body parameter allowed in '${this.getCurrentLocation()}' method.`);
-        }
-        if (bodyParameters.length > 0 && formParameters.length > 0) {
-            throw new Error(`Choose either during @FormParam and @FileParam or body parameter  in '${this.getCurrentLocation()}' method.`);
-        }
         return parameters;
+    }
+
+    //gets 'ParamFromPath' parameters
+    private getPathParameters(): Parameter[] {
+        let params: Parameter[] = [];
+        const decorators = getDecorators(this.node, decorator => decorator.text === 'ParamFromPath');
+        decorators.map(d=>{
+            const typeDef = d.arguments[1].name.text as PrimitiveTypes;
+            params.push(ParameterGenerator.build(d.arguments[0], 'path', typeDef, d.arguments[2]));
+        });
+
+        return params;
     }
 
     private getCurrentLocation() {

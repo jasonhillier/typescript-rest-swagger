@@ -67,7 +67,7 @@ export class MyService {
     }
 
     @GET
-    @Path('multi-query')
+    @swagger.Path('multi-query')
     testMultiQuery(
         @QueryParam('id') ids: string[],
         @QueryParam('name'/*, { collectionFormat: 'multi', allowEmptyValue: true }*/) names?: string | string[]
@@ -335,7 +335,8 @@ export class PrimitiveEndpoint {
 
     @Path(':id')
     @GET
-    getById(@PathParam('id') @swagger.IsLong id: number) {
+    @swagger.ParamFromPath('id', swagger.PrimitiveTypes.long, 'test description')
+    getById() {
         // ...
     }
 

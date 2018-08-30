@@ -1,7 +1,8 @@
 import { MetadataGenerator, Parameter, Type } from './metadataGenerator';
-import { resolveType, getReferenceType, getCommonPrimitiveAndArrayUnionType, getLiteralValue } from './resolveType';
+import { resolveType, getCommonPrimitiveAndArrayUnionType, getLiteralValue, resolveReference } from './resolveType';
 import { getDecoratorName, getDecoratorTextValue, getDecoratorOptions } from '../utils/decoratorUtils';
 import * as ts from 'typescript';
+import { PrimitiveTypes } from '../decorators';
 
 export class ParameterGenerator {
     constructor(
@@ -11,15 +12,27 @@ export class ParameterGenerator {
         private readonly genericTypeMap?: Map<String, ts.TypeNode>
     ) { }
 
-    static build(name: string, pIn: string, pTypeName: ts.Identifier, description?: string, required: boolean = true): Parameter
+    static build(name: string, pIn: string, pTypeId: ts.Identifier | Type | PrimitiveTypes, description?: string, required: boolean = true): Parameter
     {
+        if (typeof(pTypeId) === 'string') //enum
+        {
+            pTypeId = {typeName: pTypeId+''};
+        }
+        else if (pTypeId as ts.Identifier)
+        {
+            pTypeId = resolveReference(<ts.Identifier>pTypeId);
+        }
+
+        if (!(pTypeId as Type))
+            throw new Error(`Type specified in parameter ${name} could not be resolved!`);
+
         return {
             description: description || '',
             in: pIn,
             name: name,
             parameterName: name,
             required: required,
-            type: getReferenceType(pTypeName)
+            type: <Type>pTypeId
         };
     }
 

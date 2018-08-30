@@ -92,6 +92,14 @@ export function resolveType(typeNode?: ts.TypeNode, genericTypeMap?: Map<String,
     return referenceType;
 }
 
+export function resolveReference(typeId: ts.Identifier): Type
+{
+    //TODO: generic type args??
+    const referenceType = getReferenceType(typeId as ts.EntityName);
+    MetadataGenerator.current.addReferenceType(referenceType);
+    return referenceType;
+}
+
 function getPrimitiveType(typeNode: ts.TypeNode): Type | undefined {
     const primitiveType = syntaxKindMap[typeNode.kind];
     if (!primitiveType) { return; }
@@ -204,7 +212,7 @@ function getInlineObjectType(typeNode: ts.TypeNode): ObjectType {
     return type;
 }
 
-export function getReferenceType(type: ts.EntityName, genericTypeMap?: Map<String, ts.TypeNode>, genericTypes?: ts.TypeNode[]): ReferenceType {
+function getReferenceType(type: ts.EntityName, genericTypeMap?: Map<String, ts.TypeNode>, genericTypes?: ts.TypeNode[]): ReferenceType {
     let typeName = resolveFqTypeName(type);
     if (genericTypeMap && genericTypeMap.has(typeName)) {
         const refType: any = genericTypeMap.get(typeName);
