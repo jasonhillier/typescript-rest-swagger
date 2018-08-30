@@ -111,8 +111,10 @@ export class MethodGenerator {
 
         if (this.config.autoPathParameters && this.path)
         {
-                const paramsInPath = this.path.match(/{(.+?)}/);
-
+            const pattern = /{(.+?)}/g;
+            let paramsInPath;
+            while(paramsInPath = pattern.exec(this.path))
+            {
                 if (paramsInPath && paramsInPath[1])
                 {
                     const pathParamName = paramsInPath[1];
@@ -137,6 +139,7 @@ export class MethodGenerator {
                         }
                     }
                 }
+            }
         }
     }
 
