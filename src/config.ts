@@ -14,6 +14,11 @@ export interface SwaggerConfig {
     yaml: boolean;
 
     /**
+    * Flag to name operation exactly as the method name.
+    */
+    operationNameMethodOnly: boolean;
+
+    /**
     * Generated SwaggerConfig.json will output here
     */
     outputDirectory: string | string[];

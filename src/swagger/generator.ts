@@ -292,8 +292,15 @@ export class SpecGenerator {
     }
 
     private getOperationId(controllerName: string, methodName: string) {
-        const controllerNameWithoutSuffix = controllerName.replace(new RegExp('Controller$'), '');
-        return `${controllerNameWithoutSuffix}${methodName.charAt(0).toUpperCase() + methodName.substr(1)}`;
+        if (this.config.operationNameMethodOnly)
+        {
+            return methodName;
+        }
+        else
+        {
+            const controllerNameWithoutSuffix = controllerName.replace(new RegExp('Controller$'), '');
+            return `${controllerNameWithoutSuffix}${methodName.charAt(0).toUpperCase() + methodName.substr(1)}`;
+        }
     }
 
     private getSwaggerType(type: Type) {
