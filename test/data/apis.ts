@@ -333,8 +333,9 @@ export class PrimitiveEndpoint {
         return {};
     }
 
-    @Path(':AUTOID_test/test')
+    @Path(':AUTOID_test/test/:nonAutoParam')
     @GET
+    @swagger.ParamFromPath('nonAutoParam', swagger.PrimitiveTypes.string, 'test of non-auto defined path parameter')
     testAutoID(): PrimitiveInterfaceModel {
         return {};
     }

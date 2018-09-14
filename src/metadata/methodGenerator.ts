@@ -103,12 +103,7 @@ export class MethodGenerator {
 
     //gets 'ParamFromPath' parameters
     private addPathParameters(pCurrentParams: Parameter[]): void {
-        const decorators = getDecorators(this.node, decorator => decorator.text === 'ParamFromPath');
-        decorators.map(d=>{
-            const typeDef = d.arguments[1].name.text as PrimitiveTypes;
-            pCurrentParams.push(ParameterGenerator.build(d.arguments[0], 'path', typeDef, d.arguments[2]));
-        });
-
+        //add the auto parameters first, then the user-defined ones.
         if (this.config.autoPathParameters && this.path)
         {
             const pattern = /{(.+?)}/g;
@@ -141,6 +136,12 @@ export class MethodGenerator {
                 }
             }
         }
+
+        const decorators = getDecorators(this.node, decorator => decorator.text === 'ParamFromPath');
+        decorators.map(d=>{
+            const typeDef = d.arguments[1].name.text as PrimitiveTypes;
+            pCurrentParams.push(ParameterGenerator.build(d.arguments[0], 'path', typeDef, d.arguments[2]));
+        });
     }
 
     private getCurrentLocation() {
