@@ -362,7 +362,7 @@ describe('Definition generation', () => {
 
   describe('GenericClass', () => {
     it('should be able to dynamically construct a path using a type\'s generic argument', () => {
-      const expression = jsonata('paths."/Number".get.operationId');
+      const expression = jsonata('paths."/GenericTypeTest".get.operationId');
       expect(expression.evaluate(spec)).to.equal('GenericClassTestGet');
     });
   });

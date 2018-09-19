@@ -90,7 +90,8 @@ export class ControllerGenerator {
             //path is a template string that uses the Classes first generic arg type as 'type' parameter
             if (typeArguments.length>0)
             {
-                pFoundText = pFoundText.replace('{type}', typeArguments[0].getText());
+                pFoundText = pFoundText.replace('{type}', typeArguments[0].getLastToken().getText());
+                pFoundText = pFoundText.replace('{fullType}', typeArguments[0].getFullText());
                 //we only care about this tag IF there is a generic arg on a superclass
                 path = pFoundText;
             }
