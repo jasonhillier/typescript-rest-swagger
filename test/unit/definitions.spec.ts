@@ -359,4 +359,11 @@ describe('Definition generation', () => {
       expect(expression.evaluate(spec)).to.deep.equal([ { 'access_token': [] }, { 'user_email': [] } ]);
     });
   });
+
+  describe('GenericClass', () => {
+    it('should be able to dynamically construct a path using a type\'s generic argument', () => {
+      const expression = jsonata('paths."/Number".get.operationId');
+      expect(expression.evaluate(spec)).to.equal('GenericClassTestGet');
+    });
+  });
 });

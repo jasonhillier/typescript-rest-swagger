@@ -384,6 +384,18 @@ export class AbstractEntityEndpoint {
     }
 }
 
+@swagger.PathFromGenericArg('/{type}')
+export abstract class GenericClass<T extends Number>
+{
+    @GET
+    get(): T {
+        return <any>0;
+    }
+}
+
+export class GenericClassTest extends GenericClass<Number> {};
+
+
 @Path('secure')
 @swagger.Security('access_token')
 export class SecureEndpoint {

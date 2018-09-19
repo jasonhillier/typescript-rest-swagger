@@ -1,6 +1,6 @@
 {
   "name": "typescript-rest-swagger-plural",
-  "version": "0.0.33",
+  "version": "0.0.34",
   "description": "Generate Swagger files from a typescript-rest project",
   "keywords": [
     "typescript",
@@ -24,7 +24,7 @@
     "deploy": "npm version patch && npm publish",
     "postversion": "git push origin master",
     "swagger-gen": "node ./dist/cli.js -c ./test/data/swagger.json",
-    "pretest": "cross-env NODE_ENV=test npm build && npm run lint",
+    "pretest": "cross-env NODE_ENV=test npm build",
     "test": "cross-env NODE_ENV=test mocha",
     "test:coverage": "nyc npm test",
     "tsc": "tsc"

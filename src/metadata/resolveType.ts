@@ -622,10 +622,13 @@ export function getSuperClass(node: ts.ClassDeclaration, typeArguments?: Map<Str
             const clause: ts.HeritageClause = filteredClauses[0];
             if (clause.types && clause.types.length) {
                 const type: any = MetadataGenerator.current.getClassDeclaration(clause.types[0].expression.getText());
-                return {
-                    type: type,
-                    typeArguments: resolveTypeArguments(type, clause.types[0].typeArguments, typeArguments)
-                };
+                if (type)
+                {
+                    return {
+                        type: type,
+                        typeArguments: resolveTypeArguments(type, clause.types[0].typeArguments, typeArguments)
+                    };
+                }
             }
         }
     }

@@ -88,6 +88,14 @@ export function Path(path: string): any {
 }
 
 /**
+ * Builds path name from template string using the first generic argument of the decorated type.
+ * e.x. '/{type}'
+ */
+export function PathFromGenericArg(path: string): any {
+  return () => { return; };
+}
+
+/**
  * Documentation-only: Allow specifying path-parameter without 'typescript-rest' library
  */
 export function ParamFromPath<T>(name: string, paramType:  PrimitiveTypes, description?: string): any {
