@@ -13,6 +13,7 @@ export function getDefaultOptions(): SwaggerConfig {
     license: 'MIT',
     name: 'Test API',
     outputDirectory: '',
+    shortTypeNames: true,
     version: '1.0.0',
     yaml: false
   };

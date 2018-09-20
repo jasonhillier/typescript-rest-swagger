@@ -365,5 +365,8 @@ describe('Definition generation', () => {
       const expression = jsonata('paths."/GenericTypeTest".get.operationId');
       expect(expression.evaluate(spec)).to.equal('GenericClassTestGet');
     });
+    it('should collapse the return type name', () => {
+      expect(spec.definitions).to.have.property('GenericTypeTest');
+    });
   });
 });

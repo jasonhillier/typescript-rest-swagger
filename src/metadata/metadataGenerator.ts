@@ -17,6 +17,10 @@ export class MetadataGenerator {
     }
 
     public generate(): Metadata {
+        //TODO: bit of a hack
+        if (this.config.shortTypeNames)
+            (<any>global).shortTypeNames = this.config.shortTypeNames;
+        
         this.program.getSourceFiles().forEach(sf => {
             ts.forEachChild(sf, node => {
                 this.nodes.push(node);

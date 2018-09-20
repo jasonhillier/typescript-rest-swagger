@@ -274,7 +274,14 @@ function resolveFqTypeName(type: ts.EntityName): string {
     }
 
     const qualifiedType = type as ts.QualifiedName;
-    return resolveFqTypeName(qualifiedType.left) + '.' + (qualifiedType.right as ts.Identifier).text;
+    if ((<any>global).shortTypeNames) //TODO: bit of a hack
+    {
+        return (qualifiedType.right as ts.Identifier).text;
+    }
+    else
+    {
+        return resolveFqTypeName(qualifiedType.left) + '.' + (qualifiedType.right as ts.Identifier).text;
+    }
 }
 
 function resolveSimpleTypeName(type: ts.EntityName): string {

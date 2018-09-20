@@ -10,6 +10,7 @@ import {
 } from 'typescript-rest';
 
 import * as swagger from '../../src/decorators';
+import * as APIModule from './api_module';
 import { Tags } from '../../src/decorators';
 
 interface Address {
@@ -384,11 +385,6 @@ export class AbstractEntityEndpoint {
     }
 }
 
-export class GenericTypeTest
-{
-    test: number;
-}
-
 @swagger.PathFromGenericArg('/{type}')
 export abstract class GenericClass<T>
 {
@@ -398,7 +394,7 @@ export abstract class GenericClass<T>
     }
 }
 
-export class GenericClassTest extends GenericClass<GenericTypeTest> {};
+export class GenericClassTest extends GenericClass<APIModule.GenericTypeTest> {};
 
 @Path('secure')
 @swagger.Security('access_token')

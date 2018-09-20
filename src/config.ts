@@ -16,7 +16,7 @@ export interface SwaggerConfig {
     /**
     * Flag to name operation exactly as the method name.
     */
-    operationNameMethodOnly: boolean;
+    operationNameMethodOnly?: boolean;
 
     /**
     * Generated SwaggerConfig.json will output here
@@ -103,6 +103,13 @@ export interface SwaggerConfig {
      * ['^ID', 'long', 'id value description']
      */
     autoPathParameters?: string[][];
+
+    /**
+     * Shorten qualified type names to their rightmost identity.
+     * i.e.
+     * "Module.Type" -> "Type"
+     */
+    shortTypeNames?: boolean;
 
     /**
      * Default collectionFormat property for query parameters of array type.
