@@ -62,6 +62,9 @@ describe('Definition generation', () => {
 
       expression = jsonata('paths."/primitives/{AUTOID_test}/test/{nonAutoParam}".get.parameters[1].description');
       expect(expression.evaluate(spec)).to.eq('test of non-auto defined path parameter');
+
+      expression = jsonata('paths."/primitives/{AUTOID_test}/testOverride/{nonAutoParam}".get.parameters[1].description');
+      expect(expression.evaluate(spec)).to.contain('override')
     });
 
     it('should generate description for methods and paraemters', () => {

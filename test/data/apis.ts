@@ -341,6 +341,14 @@ export class PrimitiveEndpoint {
         return {};
     }
 
+    @Path(':AUTOID_test/testOverride/:nonAutoParam')
+    @GET
+    @swagger.ParamFromPath('nonAutoParam', swagger.PrimitiveTypes.string, 'test of non-auto defined path parameter')
+    @swagger.ParamFromPath('AUTOID_test', swagger.PrimitiveTypes.string, 'intentional override')
+    testAutoIDOverride(): PrimitiveInterfaceModel {
+        return {};
+    }
+
     @Path(':id')
     @GET
     @swagger.ParamFromPath('id', swagger.PrimitiveTypes.long, 'test description')

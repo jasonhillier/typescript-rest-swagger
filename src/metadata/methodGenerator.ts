@@ -103,7 +103,14 @@ export class MethodGenerator {
 
     //gets 'ParamFromPath' parameters
     private addPathParameters(pCurrentParams: Parameter[]): void {
-        //add the auto parameters first, then the user-defined ones.
+        //add the explicitly-defined parameters first
+        const decorators = getDecorators(this.node, decorator => decorator.text === 'ParamFromPath');
+        decorators.map(d=>{
+            const typeDef = d.arguments[1].name.text as PrimitiveTypes;
+            pCurrentParams.push(ParameterGenerator.build(d.arguments[0], 'path', typeDef, d.arguments[2]));
+        });
+
+        //then add the auto parameters, but insert them at the beginning
         if (this.config.autoPathParameters && this.path)
         {
             const pattern = /{(.+?)}/g;
@@ -123,7 +130,7 @@ export class MethodGenerator {
                                 //only add parameter it if it doesn't already exist
                                 if (!pCurrentParams.find(p=>p.name === pathParamName && p.in === 'path'))
                                 {
-                                    pCurrentParams.push(ParameterGenerator.build(
+                                    pCurrentParams.splice(x, 0, ParameterGenerator.build(
                                         pathParamName,
                                         'path', 
                                         <PrimitiveTypes>this.config.autoPathParameters[x][1],
@@ -136,12 +143,6 @@ export class MethodGenerator {
                 }
             }
         }
-
-        const decorators = getDecorators(this.node, decorator => decorator.text === 'ParamFromPath');
-        decorators.map(d=>{
-            const typeDef = d.arguments[1].name.text as PrimitiveTypes;
-            pCurrentParams.push(ParameterGenerator.build(d.arguments[0], 'path', typeDef, d.arguments[2]));
-        });
     }
 
     private getCurrentLocation() {
