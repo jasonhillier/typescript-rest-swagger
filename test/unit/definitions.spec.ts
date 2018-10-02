@@ -123,6 +123,11 @@ describe('Definition generation', () => {
       expect(expression.evaluate(spec)).to.eq('#/definitions/Address');
     });
 
+    it('should generate a definition (EXCLUDING hidden fields) for a referenced type', () => {
+      const expression = jsonata('definitions.MyDatatype.properties.testHiddenField');
+      expect(expression.evaluate(spec)).to.be.undefined;
+    });
+
     it('should generate a body param with string schema type', () => {
       let expression = jsonata('paths."/mypath".post.parameters[0].in');
       expect(expression.evaluate(spec)).to.eq('body');

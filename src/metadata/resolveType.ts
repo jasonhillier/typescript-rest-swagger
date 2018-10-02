@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 import { MetadataGenerator, Type, EnumerateType, ReferenceType, ObjectType, ArrayType, Property } from './metadataGenerator';
-import { getDecoratorName } from '../utils/decoratorUtils';
+import { getDecoratorName, getDecoratorTextValue } from '../utils/decoratorUtils';
 import { getFirstMatchingJSDocTagName } from '../utils/jsDocUtils';
 import * as _ from 'lodash';
 
@@ -488,6 +488,22 @@ function getModelTypeProperties(node: any, genericTypes?: ts.TypeNode[]): Proper
     if (classConstructor && classConstructor.parameters) {
         properties = properties.concat(classConstructor.parameters.filter(parameter => hasPublicConstructorModifier(parameter)) as any);
     }
+
+    let hiddenProperties: string[] = [];
+    properties.map(declaration =>
+        {
+            let textValue = getDecoratorTextValue(declaration, (decorator)=>decorator.text == 'json');
+            if (textValue && textValue != declaration.name.getText())
+            {
+                hiddenProperties.push(textValue);
+            }
+        });
+
+    properties = properties.filter(declaration =>
+        {
+            return !hiddenProperties.find(name => name == declaration.name.getText()) &&
+                    !getDecoratorName(declaration, (decorator)=>decorator.text == 'hidden');
+        });
 
     return properties
         .map(declaration => {

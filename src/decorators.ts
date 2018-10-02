@@ -155,6 +155,13 @@ export function IsDouble(target: any, propertyKey: string, parameterIndex?: numb
 }
 
 /**
+ * Hide the property (do not document)
+ */
+export function hidden(): any {
+  return () => { return; };
+}
+
+/**
  * Documentation-only: Allow specifying APIs without 'typescript-rest' library
  */
 export function GET(): any {

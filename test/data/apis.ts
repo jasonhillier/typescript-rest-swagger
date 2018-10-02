@@ -11,7 +11,7 @@ import {
 
 import * as swagger from '../../src/decorators';
 import * as APIModule from './api_module';
-import { Tags } from '../../src/decorators';
+import { Tags, hidden } from '../../src/decorators';
 
 interface Address {
     street: string;
@@ -160,6 +160,9 @@ export class PromiseService extends BaseService {
 
 export class BasicModel {
     id: number;
+    
+    @swagger.hidden()
+    testHiddenField: string;
 }
 
 export class BasicEndpoint<T extends BasicModel>  {
