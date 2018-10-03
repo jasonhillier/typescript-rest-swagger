@@ -266,6 +266,15 @@ function mergeReferenceTypeProperties(properties: Property[], extendedProperties
             properties.push(prop);
         }
     });
+
+    //remove all properties flagged as "hidden"
+    for(let i=properties.length-1; i>=0; i--)
+    {
+        if ((<any>properties[i]).hidden)
+        {
+            properties.splice(i, 1);
+        }
+    }
 }
 
 function resolveFqTypeName(type: ts.EntityName): string {
@@ -499,23 +508,24 @@ function getModelTypeProperties(node: any, genericTypes?: ts.TypeNode[]): Proper
             }
         });
 
-    properties = properties.filter(declaration =>
-        {
-            return !hiddenProperties.find(name => name == declaration.name.getText()) &&
-                    !getDecoratorName(declaration, (decorator)=>decorator.text == 'hidden');
-        });
-
     return properties
         .map(declaration => {
             const identifier = declaration.name as ts.Identifier;
 
             if (!declaration.type) { throw new Error('No valid type found for property declaration.'); }
 
+            let isHidden = false;
+            if (hiddenProperties.find(name => name == declaration.name.getText()))
+                isHidden = true;
+            if (getDecoratorName(declaration, (decorator)=>decorator.text == 'hidden'))
+                isHidden = true;
+
             return {
                 description: getNodeDescription(declaration),
                 name: identifier.text,
                 required: !declaration.questionToken,
-                type: resolveType(resolveTypeParameter(declaration.type, classDeclaration, genericTypes))
+                type: resolveType(resolveTypeParameter(declaration.type, classDeclaration, genericTypes)),
+                hidden: isHidden
             };
         });
 }

@@ -160,9 +160,6 @@ export class PromiseService extends BaseService {
 
 export class BasicModel {
     id: number;
-    
-    @swagger.hidden()
-    testHiddenField: string;
 }
 
 export class BasicEndpoint<T extends BasicModel>  {
@@ -381,11 +378,16 @@ export abstract class Entity {
      * A numeric identifier
      */
     id?: number;
+
+    testHiddenField: string;
 }
 
 export class NamedEntity implements Entity {
     id: number;
     name: string;
+
+    @swagger.hidden()
+    testHiddenField: string;
 }
 
 @Path('abstract')
